@@ -1,0 +1,7 @@
+# Exclude any temporary files
+*~
+
+# Exclude output movies
+*.mov
+*.mp4
+*.avi
