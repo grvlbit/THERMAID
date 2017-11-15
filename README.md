@@ -7,7 +7,7 @@ A numerical code to solve flow and heat transport in fractured porous media by t
 What is Thermaid?
 ------------------
 
-THERMAID is short for *Thermo-Hydraulic Energy Resources Modeling Application In Development* and is a MATLAB program solving flow and heat transport in fractured porous media using the embedded discrete fracture method. It is targeted at researchers in the field of subsurface simulations who want to investigate energy resources in the subsurface and understand the embedded discrete fracture model.
+THERMAID is short for *Thermo-Hydraulic Energy Resource Modelling for Application and Development* and is a MATLAB program solving flow and heat transport in fractured porous media using the embedded discrete fracture method. It is targeted at researchers in the field of subsurface simulations who want to investigate energy resources in the subsurface and understand the embedded discrete fracture model.
 
 
 
