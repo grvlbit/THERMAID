@@ -47,7 +47,6 @@ xlabel('x [m]')
 ylabel('x [m]')
 colormap jet
 axis equal
-ng;
 
 
 figure(2) 
@@ -67,7 +66,6 @@ xlabel('x [m]')
 ylabel('x [m]')
 colormap jet
 axis equal
-ng;
 
 
 rmpath ../
