@@ -8,10 +8,11 @@ The following example cases are currenlty included in Thermaid
  - ex4 : Loads a fracSim DFN (see also DFN/frac_load_fracsun.m for details) and runs transient fluid pressure diffusion.
  - ex5 : Loads a fracman DFN (see also DFN/frac_load_fracman.m for details) and runs transient fluid pressure diffusion.
 
-Note that between calling different examples (or simulations in general), it might be requiered to use 
+If you recieve an error between running different examples or simulations complaining about **matrix dimensions that do not agree** 
+it is adviced to use 
 
 ```
 close all; clear all;
 ```
 
-in order to remove the persistent matrices which are resolution and DFN dependent.
+in order to remove the persistent matrices which are resolution and DFN dependent. Afterwards the simulation should be able to start!

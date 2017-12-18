@@ -21,14 +21,25 @@ Let's say you've stored everything in a directory /path/to/THERMAID.
 Then you can run and test the program by opening matlab and running:
 
     >> cd /path/to/THERMAID
-    >> cd examples/
+    >> open examples/README.md
     >> ex1
 
-If this gives you an error message try to execute the startup script manually:
+This will run first example of THERMAID. The other examples can be used similarly:
 
-    >> startup
+    >> ex2
+    >> ex3
+    >> ex4
+    >> ex5
 
-Then start MATLAB and continue as before.
+If you recieve an error between running different examples or simulations complaining about **matrix dimensions that do not agree** 
+it is adviced to use 
+
+```
+close all; clear all;
+```
+
+in order to remove the persistent matrices which are resolution and DFN dependent. Afterwards the simulation should be able to start!
+
 
 Detailed instructions can be found in the quick start guide.
 

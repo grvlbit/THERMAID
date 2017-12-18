@@ -125,20 +125,20 @@ udata.dxf = dxf;
 
 XY1 = [xb' yb' xe' ye'];
 
-% Comment in the following code to visualize the fracture network before
-% the simulation is started
-% -------------------------------------------------------------------------
-ListOfVariables = who;
-for k = 1:length(ListOfVariables)
-  assignin('base',ListOfVariables{k},eval(ListOfVariables{k}))
-end 
-figure(221)
-line([XY1(:,1)';XY1(:,3)'],[XY1(:,2)';XY1(:,4)'],'Color','[0 0.4470 0.7410]','LineWidth',1);
-hold on
-scatter(xe,ye,30,'filled')
-scatter(xb,yb,30,'filled')
-
-hold off
-xlabel('x [m]');
-ylabel('y [m]');
-axis tight
+% % Comment in the following code to visualize the fracture network before
+% % the simulation is started
+% % -------------------------------------------------------------------------
+% ListOfVariables = who;
+% for k = 1:length(ListOfVariables)
+%   assignin('base',ListOfVariables{k},eval(ListOfVariables{k}))
+% end 
+% figure(221)
+% line([XY1(:,1)';XY1(:,3)'],[XY1(:,2)';XY1(:,4)'],'Color','[0 0.4470 0.7410]','LineWidth',1);
+% hold on
+% scatter(xe,ye,30,'filled')
+% scatter(xb,yb,30,'filled')
+% 
+% hold off
+% xlabel('x [m]');
+% ylabel('y [m]');
+% axis tight

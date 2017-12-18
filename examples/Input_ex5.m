@@ -26,8 +26,8 @@ udata.Nf      = [151 151];  	                % number of cells in x and y direct
 udata.dx      = udata.len./udata.Nf;                      % cell length [m]
 
 %% SIMULATION PARAMETER FOR TRANSPORT --------------------------------------------------------------%
-udata.timeSim  = 86400;                         % total simulation time [s]
-udata.dt       = 600;                           % time step length [s]
+udata.timeSim  = 40*365*86400;                         % total simulation time [s]
+udata.dt       = 1*365*86400;                           % time step length [s]
 udata.tol    = 1.e-3;                       % saturation tolerance on pressure-concentration-heat loop [-]
 udata.maxit    = 100;                         % maximum number of pressure concentration-heat loops to converge
 
@@ -50,16 +50,17 @@ udata.p0f  = zeros(udata.Nf_f,1);                   % Initial fracture pressure 
 udata.ibcs = zeros(2*sum(udata.Nf),1);              % type 0:Neumann(N); 1:Dirichlet(D)
 udata.Fix  = zeros(2*sum(udata.Nf),1);              % value N [m2/s] (inflow>0); D [Pa]   
 
-udata.ibcs(1:udata.Nf(2)) = 1;
-udata.Fix(1:udata.Nf(2)) = 2.5e7;
+udata.ibcs(round(udata.Nf(2)/2):udata.Nf(2)) = 1;
+udata.Fix(round(udata.Nf(2)/2):udata.Nf(2)) = 2.5e7;
 
 udata.ibcs(udata.Nf(2)+1:2*udata.Nf(2)) = 1;
 udata.Fix(udata.Nf(2)+1:2*udata.Nf(2)) = 0.0;
 
 %% BC TRANSPORT ------------------------------------------------------------------------------------%
-udata.flagHeatTransport = 0;
+udata.flagHeatTransport = 1;
 
 udata.FixT     = 200*ones(2*sum(udata.Nf),1);           % normalized concentration of boundary flow [-]
+udata.FixT(round(udata.Nf(2)/2):udata.Nf(2)) = 80;
 
 %% SOURCE TERMS ------------------------------------------------------------------------------------%
 Q       = zeros(udata.Nf);                    % source term [m2/s]; inflow positive
@@ -69,8 +70,8 @@ QT      = zeros(udata.Nf);                    % normalized concentration for sou
 udata.gravity   = 0;                          % gravity acceleration in y [m/s2]
 
 %% PERMEABILITY ------------------------------------------------------------------------------------%
-udata.K       = ones(udata.Nf(1),udata.Nf(2))*1e-14; 	    % permeability field [m2]
-udata.K_f     = ones(udata.Nf_f,1)*1e-9; 	        % fracture permeability field [m2]
+udata.K       = ones(udata.Nf(1),udata.Nf(2))*1e-15; 	    % permeability field [m2]
+udata.K_f     = ones(udata.Nf_f,1)*1e-11; 	        % fracture permeability field [m2]
 
 %% Fracture aperture
 udata.b0      = sqrt(12.*udata.K_f).*ones(udata.Nf_f,1);  % fracture aperture field [m]
@@ -126,7 +127,8 @@ udata.density_sf = 2650*ones(udata.Nf_f,1); % density of the rock [kg/m3]
 
 %% THERMAL DIFFUSION ------------------------------------------------------------------------%
 udata.lambda_l = 0.5;                           % Thermal conductivity of the fluid [W/(m*K)]
-udata.lambda_s = 3.0;                           % Thermal conductivity of the rock [W/(m*K)]
+udata.lambda_s = 2.0;                           % Thermal conductivity of the rock [W/(m*K)]
 udata.cp_l = 4000;                               % Specific heat capacity of the fluid [J/(kg*K)]
-udata.cp_s = 790;                               % Specific heat capacity of the rock [J/(kg*K)]
+udata.cp_s = 1000;                               % Specific heat capacity of the rock [J/(kg*K)]
 udata.ibcD    = zeros(2*sum(udata.Nf),1);           % 1 -> Diffusion on boundary cells
+udata.ibcD(round(udata.Nf(2)/2):udata.Nf(2)) = 1;

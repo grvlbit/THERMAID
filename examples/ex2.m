@@ -21,6 +21,8 @@
 
 addpath ../
 
+close all; clear all;
+
 load comsol_bench_th2.mat
 
 global k_ratio

@@ -21,6 +21,8 @@
 
 addpath ../
 
+close all; clear all;
+
 global k_ratio
 
 % Run with Kf/Km = 1e5
