@@ -3,29 +3,29 @@ function [Tx,Ty,Tf,Tfm,Tff,DfmT,g,gf,density_l,density_lf] = initialize(udata,T,
 %  temperature
 %  ---------------------------------------------------------------------
 %  Copyright (C) 2016 by the Thermaid authors
-% 
+%
 %  This file is part of Thermaid.
-% 
+%
 %  Thermaid is free software: you can redistribute it and/or modify
 %  it under the terms of the GNU General Public License as published by
 %  the Free Software Foundation, either version 3 of the License, or
 %  (at your option) any later version.
-% 
+%
 %  Thermaid is distributed in the hope that it will be useful,
 %  but WITHOUT ANY WARRANTY; without even the implied warranty of
 %  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 %  GNU General Public License for more details.
-% 
+%
 %  You should have received a copy of the GNU General Public License
 %  along with Thermaid.  If not, see <http://www.gnu.org/licenses/>.
 %  ---------------------------------------------------------------------
-% 
+%
 %  Authors: Gunnar Jansen, University of Neuchatel, 2016-2017
 %           Ivan Lunati, Rouven Kuenze, University of Lausanne, 2012
 %
 %  initialize(udata,c,cf,T,Tf,p,pf,CI,row,col)
 %
-%  Input: 
+%  Input:
 %        udata  [struct]        user data
 %        T      (nx,ny)         matrix temperature
 %        Tf     (nf,1)          fracture temperature
@@ -92,18 +92,18 @@ end
 %    Gravity for the matrix                                               %
 %-------------------------------------------------------------------------%
 
-Gy    = densityy.*udata.gravity;                    
+Gy    = densityy.*udata.gravity;
 g            = Ky./viscosityy.*Gy.*udata.dx(1);  % Gravity term with respect to the interfaces
-g(:,1)       = g(:,1).*udata.ibcs(2*N(2)+1:2*N(2)+N(1)); 
-g(:,N(2)+1)  = g(:,N(2)+1).*udata.ibcs(2*N(2)+N(1)+1:2*N(2)+2*N(1)); 
+g(:,1)       = g(:,1).*udata.ibcs(2*N(2)+1:2*N(2)+N(1));
+g(:,N(2)+1)  = g(:,N(2)+1).*udata.ibcs(2*N(2)+N(1)+1:2*N(2)+2*N(1));
 
 %-------------------------------------------------------------------------%
 %    Gravity for the fractures                                            %
 %-------------------------------------------------------------------------%
 interface_frac_angle = 0.5*frac_mean_m*udata.frac_angle';
-Gyf= densityf.*udata.gravity.*sin(interface_frac_angle*pi/180);         
+Gyf= densityf.*udata.gravity.*sin(interface_frac_angle*pi/180);
 
-gf           = -Kf./viscosityf.*Gyf.*Bf;                               
+gf           = -Kf./viscosityf.*Gyf.*Bf;
 Ni=zeros(size(udata.Nf_i));
 N_fractures = length(udata.Nf_i);
 for i=1:N_fractures
@@ -113,7 +113,7 @@ for i=1:N_fractures
 end
 Nii = 1:1:length(Ni);
 
-gf(Ni-udata.Nf_i+Nii) = 0; 
+gf(Ni-udata.Nf_i+Nii) = 0;
 gf(Ni+Nii) = 0;
 
 %-------------------------------------------------------------------------%
@@ -121,7 +121,7 @@ gf(Ni+Nii) = 0;
 %-------------------------------------------------------------------------%
 Tx           = Kx./viscosityx.*udata.dx(2)./udata.dx(1);                                     % Transmissivities
 Ty           = Ky./viscosityy.*udata.dx(1)./udata.dx(2);
-Tf           = Kf./viscosityf./udata.dxf.*Bf;                                
+Tf           = Kf./viscosityf./udata.dxf.*Bf;
 
 %% Matrix-Fracture transmissivity
 %  This assembles the matrix-fracture transmissivity based on the
@@ -134,10 +134,10 @@ for i = 1:length(CI)
     indf = CI(i,2);
     lambda_ij = udata.K(indm)/viscosity(indm);
     lambda_k = udata.K_f(indf)/viscosity_f(indf);
-    X(i)  =  CI(i,3)*2*lambda_ij*lambda_k/(lambda_ij+lambda_k);   %Harmonic mean for the fracture-matrix transmissivity 
-    % X(i)  =  CI(i,3)*0.5*(lambda_ij+lambda_k);                  % (Optional) Arithmetic mean for the fracture-matrix transmissivity 
-    % X(i)  =  CI(i,3)*sqrt(lambda_ij+lambda_k);                  % (Optional) Geometric mean for the fracture-matrix transmissivity 
-    [ii,jj] = ind2sub(udata.Nf,CI(i,1));          
+    X(i)  =  CI(i,3)*2*lambda_ij*lambda_k/(lambda_ij+lambda_k);   %Harmonic mean for the fracture-matrix transmissivity
+    % X(i)  =  CI(i,3)*0.5*(lambda_ij+lambda_k);                  % (Optional) Arithmetic mean for the fracture-matrix transmissivity
+    % X(i)  =  CI(i,3)*sqrt(lambda_ij+lambda_k);                  % (Optional) Geometric mean for the fracture-matrix transmissivity
+    [ii,jj] = ind2sub(udata.Nf,CI(i,1));
     I(i) = (jj-1)*n(1)+ii;
 end
 if (isempty(CI))
@@ -150,29 +150,33 @@ Tfm = Tfm';
 %% Matrix-Fracture heat difffusivity
 %  This assembles the matrix-fracture diffusivity based on the
 %  previously computed connectivity index
-l = udata.Nf_f;
-n = udata.Nf;
-X = zeros(length(CI),1);
-for i = 1:length(CI)
-    indm = CI(i,1);
-    indf = CI(i,2);
-    lambda_ij = (udata.phi(indm).*udata.lambda_l+(1-udata.phi(indm)).*udata.lambda_s);
-    lambda_k = (udata.phi_f(indf).*udata.lambda_l+(1-udata.phi_f(indf)).*udata.lambda_s);
-    X(i)  =  CI(i,3)*2*lambda_ij*lambda_k/(lambda_ij+lambda_k);                  %Harmonic mean for the fracture-matrix transmissivity 
-    [ii,jj] = ind2sub(udata.Nf,CI(i,1));          
-    I(i) = (jj-1)*n(1)+ii;
-end
-if (isempty(CI))
+if (udata.lambda_l == 0 || udata.lambda_s == 0)
     DfmT = sparse(zeros(n(1)*n(2),l));
 else
-    DfmT = sparse(I,CI(:,2),X,n(1)*n(2),l);
+    l = udata.Nf_f;
+    n = udata.Nf;
+    X = zeros(length(CI),1);
+    for i = 1:length(CI)
+        indm = CI(i,1);
+        indf = CI(i,2);
+        lambda_ij = (udata.phi(indm).*udata.lambda_l+(1-udata.phi(indm)).*udata.lambda_s);
+        lambda_k = (udata.phi_f(indf).*udata.lambda_l+(1-udata.phi_f(indf)).*udata.lambda_s);
+        X(i)  =  CI(i,3)*2*lambda_ij*lambda_k/(lambda_ij+lambda_k);                  %Harmonic mean for the fracture-matrix transmissivity
+        [ii,jj] = ind2sub(udata.Nf,CI(i,1));
+        I(i) = (jj-1)*n(1)+ii;
+    end
+    if (isempty(CI))
+        DfmT = sparse(zeros(n(1)*n(2),l));
+    else
+        DfmT = sparse(I,CI(:,2),X,n(1)*n(2),l);
+    end
 end
 DfmT = DfmT';
 
 %% Fracture-Fracture transmissivity
 %  This assembles the fracture-fracture transmissivity based on the
 %  intersection points between the fracture segments
-alpha_row = udata.b0(row).*udata.K_f(row)./viscosityf(row)./(0.5*udata.dxf);                  
-alpha_col = udata.b0(col).*udata.K_f(col)./viscosityf(col)./(0.5*udata.dxf);                  
+alpha_row = udata.b0(row).*udata.K_f(row)./viscosityf(row)./(0.5*udata.dxf);
+alpha_col = udata.b0(col).*udata.K_f(col)./viscosityf(col)./(0.5*udata.dxf);
 Tflk = alpha_row.*alpha_col./(alpha_row+alpha_col);
-Tff = sparse(row,col,Tflk,l,l); 
+Tff = sparse(row,col,Tflk,l,l);

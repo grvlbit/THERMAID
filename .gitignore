@@ -1,6 +1,9 @@
 # Exclude any temporary files
 *~
 
+# Exclude any OCTAVE workspace files
+octave-workspace
+
 # Exclude output movies
 *.mov
 *.mp4

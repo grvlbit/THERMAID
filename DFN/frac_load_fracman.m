@@ -21,7 +21,7 @@
 %  Authors: Gunnar Jansen, University of Neuchatel, 2016-2017
 
 filename = 'fracmanTest.csv';
-[x1,y1,x2,y2] = read_fracman_dfn_file(filename);
+[x1,y1,x2,y2] = read_dfn_data_from_file(filename,2,3,5,6);
 
 xshift = min(min(x1),min(x2));
 yshift = min(min(y1),min(y2));
@@ -41,7 +41,7 @@ udata.dx      = udata.len./udata.Nf;                      % cell length [m]
 
 dfn = [x1 y1 x2 y2];
 
-dfn = round(dfn,3);
+dfn = round(dfn .* 1e3) ./ 1e3;
 
 N_fractures = length(dfn);
 
@@ -96,7 +96,7 @@ for i=1:N_fractures
         yi  = linspace(dfn(i,2),dfn(i,4),L(i)+1);
         dxi = xi(2:L(i)) - xi(1:L(i)-1);
         dyi = yi(2:L(i)) - yi(1:L(i)-1);
-        if (any(round(sqrt(dxi.*dxi + dyi.*dyi),4) ~= round(dxf,4)))
+        if (any(round(sqrt(dxi.*dxi + dyi.*dyi) .*1e4)./1e4 ~= round(dxf .* 1e4)./1e4))
             error('Error in dxf')
         end
 

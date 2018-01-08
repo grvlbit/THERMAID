@@ -44,13 +44,14 @@ if(vertical)
     yei = 2+dy:dy:7;
     yci = 2+dy/2:dy:7;
     xci = 4.5*ones(size(yci));
-    xc =[xc round(xci,4)];
-    yc =[yc round(yci,4)];
-    xb =[xb round(xci,4)];
-    xe =[xe round(xci,4)];
-    yb =[yb round(ybi,4)];
-    ye =[ye round(yei,4)];
 
+    xc =[xc round(xci .* 1e4) ./ 1e4];
+    yc =[yc round(yci .* 1e4) ./ 1e4];
+    xb =[xb round(xci .* 1e4) ./ 1e4];
+    xe =[xe round(xci .* 1e4) ./ 1e4];
+    yb =[yb round(ybi .* 1e4) ./ 1e4];
+    ye =[ye round(yei .* 1e4) ./ 1e4];
+    
     udata.Nf_i(1) = length(xci);
     udata.frac_angle = [0 0];
 else
@@ -63,12 +64,13 @@ else
 
     udata.Nf_i(1) = length(xei);
 
-    xc =[xc round(xci,4)];
-    yc =[yc round(yci,4)];
-    xb =[xb round(xbi,4)];
-    xe =[xe round(xei,4)];
-    yb =[yb round(yci,4)];
-    ye =[ye round(yci,4)];
+    xc =[xc round(xci .* 1e4) ./ 1e4];
+    yc =[yc round(yci .* 1e4) ./ 1e4];
+    xb =[xb round(xbi .* 1e4) ./ 1e4];
+    xe =[xe round(xei .* 1e4) ./ 1e4];
+    yb =[yb round(yci .* 1e4) ./ 1e4];
+    ye =[ye round(yci .* 1e4) ./ 1e4];
+    
     udata.frac_angle = [90 0];
 end
 

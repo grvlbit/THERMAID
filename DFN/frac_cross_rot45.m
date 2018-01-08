@@ -77,10 +77,10 @@ for i=1:N
             
             udata.Nf_i(i) = length(xei);
             
-            xb =[xb round(xbi,4)];
-            xe =[xe round(xei,4)];
-            yb =[yb round(ybi,4)];
-            ye =[ye round(yei,4)];
+            xb =[xb round(xbi .* 1e4) ./ 1e4];
+            xe =[xe round(xei .* 1e4) ./ 1e4];
+            yb =[yb round(ybi .* 1e4) ./ 1e4];
+            ye =[ye round(yei .* 1e4) ./ 1e4];
             
         end
         

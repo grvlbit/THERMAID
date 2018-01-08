@@ -21,9 +21,8 @@
 %  Authors: Gunnar Jansen, University of Neuchatel, 2016-2017
 
 filename = 'fracSimTest.csv';
-dfn = read_fracsim_dfn_file(filename);
-
-dfn = round(dfn,3);
+[x1,y1,x2,y2] = read_dfn_data_from_file(filename,2,3,4,5);
+dfn = [x1 y1 x2 y2];
 
 N_fractures = length(dfn);
 for i=1:N_fractures

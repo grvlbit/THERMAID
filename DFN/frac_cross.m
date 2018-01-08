@@ -45,10 +45,11 @@ yei = y+dyi:dyi:y+r*dyi;
 
 xci = 0.5*udata.len(1)*ones(size(yei));
 
-xb =[xb round(xci,4)];
-xe =[xe round(xci,4)];
-yb =[yb round(ybi,4)];
-ye =[ye round(yei,4)];
+
+xb =[xb round(xci .* 1e4) ./ 1e4];
+xe =[xe round(xci .* 1e4) ./ 1e4];
+yb =[yb round(ybi .* 1e4) ./ 1e4];
+ye =[ye round(yei .* 1e4) ./ 1e4];
 
 udata.Nf_i(1) = length(xci);
 
@@ -63,12 +64,12 @@ yci = 0.5*udata.len(2)*ones(size(xci));
 
 udata.Nf_i(2) = length(xei);
 
-xc =[xc round(xci,4)];
-yc =[yc round(yci,4)];
-xb =[xb round(xbi,4)];
-xe =[xe round(xei,4)];
-yb =[yb round(yci,4)];
-ye =[ye round(yci,4)];
+xc =[xc round(xci .* 1e4) ./ 1e4];
+yc =[yc round(yci .* 1e4) ./ 1e4];
+xb =[xb round(xbi .* 1e4) ./ 1e4];
+xe =[xe round(xei .* 1e4) ./ 1e4];
+yb =[yb round(yci .* 1e4) ./ 1e4];
+ye =[ye round(yci .* 1e4) ./ 1e4];
 
 ListOfVariables = who;
 for k = 1:length(ListOfVariables)
