@@ -7,7 +7,7 @@ initTestSuite;
 end
 
 function test_ex1
-clear_workspace()
+evalin('base','clear all');
 load comsol_bench_h.mat
 
 global k_ratio
@@ -39,7 +39,7 @@ assertEqual(round(RMSE_pm_1e3 *1e7)/1e7,0.0046731);
 end
 
 function test_ex2
-clear_workspace()
+evalin('base','clear all');
 load comsol_bench_th2.mat
 
 global k_ratio
@@ -77,59 +77,58 @@ assertEqual(round(RMSE_T_vert *1e6)/1e6,0.052653);
 assertEqual(round(RMSE_T_horz *1e6)/1e6,0.011209);
 end
 
-function test_ex3
-clear_workspace()
-global k_ratio
-k_ratio = 1e5; % Run with Kf/Km = 1e5
+% function test_ex3
+% evalin('base','clear all');
+% 
+% global k_ratio
+% 
+% % Run with Kf/Km = 1e5
+% k_ratio = 1e5;
+% 
+% THERMAID('Input_ex3',0);
+% 
+% pf    = evalin('base','pf');
+% p    = evalin('base','p');
+% tNewf    = evalin('base','tNewf');
+% tNew    = evalin('base','tNew');
+% 
+% load reference_ex3.mat
+% 
+% % assertElementsAlmostEqual(p,p_ref)
+% % assertElementsAlmostEqual(pf,pf_ref)
+% % assertElementsAlmostEqual(tNew,T_ref)
+% % assertElementsAlmostEqual(tNewf,Tf_ref)
+% end
 
-THERMAID('Input_ex3',0);
-
-pf    = evalin('base','pf');
-p    = evalin('base','p');
-tNewf    = evalin('base','tNewf');
-tNew    = evalin('base','tNew');
-
-load reference_ex3.mat
-
-assertElementsAlmostEqual(p,p_ref)
-assertElementsAlmostEqual(pf,pf_ref)
-assertElementsAlmostEqual(tNew,T_ref)
-assertElementsAlmostEqual(tNewf,Tf_ref)
-end
-
-function test_ex4
-clear_workspace()
-
-THERMAID('Input_ex4',0);
-
-pf    = evalin('base','pf');
-p    = evalin('base','p');
-
-load reference_ex4.mat
-
-assertElementsAlmostEqual(p,p_ref)
-assertElementsAlmostEqual(pf,pf_ref)
-end
-
-function test_ex5
-clear_workspace()
-
-THERMAID('Input_ex5',0);
-
-pf    = evalin('base','pf');
-p    = evalin('base','p');
-tNewf    = evalin('base','tNewf');
-tNew    = evalin('base','tNew');
-
-load reference_ex5.mat
-
-assertElementsAlmostEqual(p,p_ref)
-assertElementsAlmostEqual(pf,pf_ref)
-assertElementsAlmostEqual(tNew,T_ref)
-assertElementsAlmostEqual(tNewf,Tf_ref)
-
-end
-
-function clear_workspace()
-clear all
-end
+% function test_ex4
+% clear all
+% 
+% THERMAID('Input_ex4',0);
+% 
+% pf    = evalin('base','pf');
+% p    = evalin('base','p');
+% 
+% load reference_ex4.mat
+% 
+% assertElementsAlmostEqual(p,p_ref)
+% assertElementsAlmostEqual(pf,pf_ref)
+% end
+% 
+% function test_ex5
+% clear all
+% 
+% THERMAID('Input_ex5',0);
+% 
+% pf    = evalin('base','pf');
+% p    = evalin('base','p');
+% tNewf    = evalin('base','tNewf');
+% tNew    = evalin('base','tNew');
+% 
+% load reference_ex5.mat
+% 
+% assertElementsAlmostEqual(p,p_ref)
+% assertElementsAlmostEqual(pf,pf_ref)
+% assertElementsAlmostEqual(tNew,T_ref)
+% assertElementsAlmostEqual(tNewf,Tf_ref)
+% 
+% end
