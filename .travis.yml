@@ -42,7 +42,7 @@ before_install:
 script:
     - if [[  "$WITH_COVERAGE" == "true" ]]; then
           TEST_ARGS=WITH_COVERAGE=true;
-          COVER_ARGS=COVER=`pwd`/MOxUnit;
+          COVER_ARGS=COVER=`pwd`;
 
           if [[  "$TRAVIS" == "true"  ]]; then
               OUTPUT_ARGS=COVER_JSON_FILE=`pwd`/coveralls.json;
@@ -51,6 +51,9 @@ script:
       fi;
 
     - echo Test arguments $TEST_ARGS $COVER_ARGS $OUTPUT_ARGS $RESULT_ARGS
-    - make test $TEST_ARGS $COVER_ARGS $OUTPUT_ARGS $RESULT_ARGS
-    - eval $AFTER_SCRIPT
+    #- make test $TEST_ARGS $COVER_ARGS $OUTPUT_ARGS $RESULT_ARGS
 
+
+    -TEST=if(isempty(which('moxunit_runtests'))),error('MOxUnit is required; see https://github.com/MOxUnit/MOxUnit');end;success=moxunit_runtests(tests);exit(~success);
+    - octave --no-gui --quiet --eval $TEST
+    - eval $AFTER_SCRIPT
