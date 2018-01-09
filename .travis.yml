@@ -9,16 +9,21 @@
 language: java
 
 cache:
-  - apt
+  # Downloading octave takes a while, so let's cache apt
+  apt: true
+  directories:
+    # Cache octave packages
+    - $HOME/octave
 env:
  global:
     - OCTAVE=octave
  matrix:
-    - WITH_COVERAGE=
+    - WITH_COVERAGE=false
     - WITH_COVERAGE=true
 before_install:
     # Remember the directory where our repository to test is located
     - REPOPATH="$(pwd)" && pwd
+    - ADDPATH_COMMAND="addpath(genpath(fullfile(pwd)));";
     # to prevent IPv6 being used for APT
     - sudo bash -c "echo 'Acquire::ForceIPv4 \"true\";' > /etc/apt/apt.conf.d/99force-ipv4"
     - travis_retry sudo apt-get -y -qq update
@@ -39,21 +44,38 @@ before_install:
     - make -C MOcov install
     # Go back to the repository directory
     - cd ${REPOPATH}
+before_script:
+  - TEST_ARGS="'-recursive', '-verbose', '-junit_xml_file', 'testresults.xml'";
+    if [ "$WITH_COVERAGE" = "true" ]; then
+        TEST_ARGS+=", '-with_coverage', '-cover', '$REPOPATH'";
+        TEST_ARGS+=", '-cover_exclude', 'tests'";
+        TEST_ARGS+=", '-cover_xml_file', 'coverage.xml'";
+        TEST_ARGS+=", '-cover_json_file', 'coveralls.json'";
+    fi;
+    TEST_COMMAND="exit(~moxunit_runtests('tests', $TEST_ARGS));";
+    echo "TEST_COMMAND| $TEST_COMMAND";
+  # Double-check we are still in the right directory
+  - pwd
+  # Check what octave packages we have installed
+  - octave -q --eval "ver"
+  # ---------------------------------------------------------------------------
+  # Remove any cached results files from previous build, if present
+  - rm -f testresults.xml;
+    rm -f coverage.xml;
+    rm -f .coverage;
+    rm -f coveralls.json;
 script:
-    - if [[  "$WITH_COVERAGE" == "true" ]]; then
-          TEST_ARGS=WITH_COVERAGE=true;
-          COVER_ARGS=COVER=`pwd`;
-
-          if [[  "$TRAVIS" == "true"  ]]; then
-              OUTPUT_ARGS=COVER_JSON_FILE=`pwd`/coveralls.json;
-              AFTER_SCRIPT="curl --verbose -F json_file=@`pwd`/coveralls.json https://coveralls.io/api/v1/jobs";
-          fi;
-      fi;
-
-    - echo Test arguments $TEST_ARGS $COVER_ARGS $OUTPUT_ARGS $RESULT_ARGS
-    #- make test $TEST_ARGS $COVER_ARGS $OUTPUT_ARGS $RESULT_ARGS
-
-
-    -TEST=if(isempty(which('moxunit_runtests'))),error('MOxUnit is required; see https://github.com/MOxUnit/MOxUnit');end;success=moxunit_runtests(tests);exit(~success);
-    - octave --no-gui --quiet --eval $TEST
-    - eval $AFTER_SCRIPT
+  - octave -q --eval "$ADDPATH_COMMAND $TEST_COMMAND";
+after_success:
+  # Only run coveralls on Travis. When running on a public Travis-CI, the
+  # repo token is automatically inferred, but to run coveralls on Shippable
+  # the repo token needs to be specified in a .coveralls.yml or as an
+  # environment variable COVERALLS_REPO_TOKEN. This should be kept hidden
+  # from public viewing, either by encrypting the token or running on a
+  # private build.
+  # We ignore coverage push failures because the servers are not 100%
+  # reliable and we don't want the CI to report a failure just because the
+  # coverage report wasn't published.
+  - if [ "$COVERAGE" = "true" ] && [ "$TRAVIS" = "true" ]; then
+      curl --verbose -F json_file=@`pwd`/coveralls.json https://coveralls.io/api/v1/jobs  || echo "Coveralls push failed";
+    fi;
