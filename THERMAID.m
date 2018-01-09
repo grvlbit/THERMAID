@@ -304,5 +304,5 @@ end
 try
     close(vidObj);
 catch
-    warning('No video object to close')
+     %warning('No video object to close')
 end

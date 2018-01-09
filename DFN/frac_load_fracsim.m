@@ -21,7 +21,7 @@
 %  Authors: Gunnar Jansen, University of Neuchatel, 2016-2017
 
 filename = 'fracSimTest.csv';
-[x1,y1,x2,y2] = read_dfn_data_from_file(filename,2,3,4,5);
+[x1,y1,x2,y2] = read_dfn_data_from_file(filename,'fracsim',2,3,4,5);
 dfn = [x1 y1 x2 y2];
 
 N_fractures = length(dfn);
@@ -76,7 +76,7 @@ for i=1:N_fractures
         yi  = linspace(dfn(i,2),dfn(i,4),L(i)+1);
         dxi = xi(2:L(i)) - xi(1:L(i)-1);
         dyi = yi(2:L(i)) - yi(1:L(i)-1);
-        if (any(round(sqrt(dxi.*dxi + dyi.*dyi),4) ~= round(dxf,4)))
+        if (any(round(sqrt(dxi.*dxi + dyi.*dyi) .*1e4)./1e4 ~= round(dxf .* 1e4)./1e4))
             error('Error in dxf')
         end
 
@@ -105,20 +105,20 @@ udata.dxf = dxf;
 
 XY1 = [xb' yb' xe' ye'];
 
-% Comment in the following code to visualize the fracture network before
-% the simulation is started
-% -------------------------------------------------------------------------
-ListOfVariables = who;
-for k = 1:length(ListOfVariables)
-  assignin('base',ListOfVariables{k},eval(ListOfVariables{k}))
-end 
-figure(221)
-line([XY1(:,1)';XY1(:,3)'],[XY1(:,2)';XY1(:,4)'],'Color','[0 0.4470 0.7410]','LineWidth',1);
-hold on
-scatter(xe,ye,30,'filled')
-scatter(xb,yb,30,'filled')
-
-hold off
-xlabel('x [m]');
-ylabel('y [m]');
-axis tight
+% % Comment in the following code to visualize the fracture network before
+% % the simulation is started
+% % -------------------------------------------------------------------------
+% ListOfVariables = who;
+% for k = 1:length(ListOfVariables)
+%   assignin('base',ListOfVariables{k},eval(ListOfVariables{k}))
+% end 
+% figure(221)
+% line([XY1(:,1)';XY1(:,3)'],[XY1(:,2)';XY1(:,4)'],'Color','[0 0.4470 0.7410]','LineWidth',1);
+% hold on
+% scatter(xe,ye,30,'filled')
+% scatter(xb,yb,30,'filled')
+% 
+% hold off
+% xlabel('x [m]');
+% ylabel('y [m]');
+% axis tight

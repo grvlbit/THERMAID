@@ -21,7 +21,7 @@
 %  Authors: Gunnar Jansen, University of Neuchatel, 2016-2017
 
 filename = 'fracmanTest.csv';
-[x1,y1,x2,y2] = read_dfn_data_from_file(filename,2,3,5,6);
+[x1,y1,x2,y2] = read_dfn_data_from_file(filename,'fracman',2,3,5,6);
 
 xshift = min(min(x1),min(x2));
 yshift = min(min(y1),min(y2));

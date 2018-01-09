@@ -1,0 +1,63 @@
+# vim ft=yaml
+# travis-ci.org definition for MOxUnit build (based on CoSMoMVPA,
+# which is based on PyMVPA, which is based on nipype configuration, 
+# which in turn was based on nipy)
+#
+# We pretend to be java because we need GNU Octave which is not
+# available (as of April 2015)
+
+language: java
+
+cache:
+  - apt
+env:
+ global:
+    - OCTAVE=octave
+ matrix:
+    - WITH_COVERAGE=
+    - WITH_COVERAGE=true
+    - RUN_DOC_TEST=true
+before_install:
+    # Remember the directory where our repository to test is located
+    - REPOPATH="$(pwd)" && pwd
+    # to prevent IPv6 being used for APT
+    - sudo bash -c "echo 'Acquire::ForceIPv4 \"true\";' > /etc/apt/apt.conf.d/99force-ipv4"
+    - travis_retry sudo apt-get -y -qq update
+    - travis_retry sudo apt-get install -y -qq software-properties-common python-software-properties
+    - travis_retry sudo apt-add-repository -y ppa:octave/stable
+    - travis_retry sudo apt-get -y -qq update
+    # get Octave 4,0
+    - travis_retry sudo apt-get -y -qq install octave liboctave-dev
+    # install MOxUnit
+    - cd ..
+    - rm -rf MOxUnit;
+    - git clone https://github.com/MOxUnit/MOxUnit.git
+    - make -C MOxUnit install
+    # install MOcov
+    - cd ..
+    - rm -rf MOcov
+    - git clone https://github.com/MOcov/MOcov.git
+    - make -C MOcov install
+    # retrieve MOdox
+    #- rm -rf MOdox
+    #- travis_retry git clone -v git://github.com/MOdox/MOdox.git
+    #- make -C MOdox install
+    # Go back to the repository directory
+    - cd ${REPOPATH}
+script:
+    - if [[  "$WITH_COVERAGE" == "true" ]]; then
+          TEST_ARGS=WITH_COVERAGE=true;
+          COVER_ARGS=COVER=`pwd`/MOxUnit;
+
+          if [[  "$TRAVIS" == "true"  ]]; then
+              OUTPUT_ARGS=COVER_JSON_FILE=`pwd`/coveralls.json;
+              AFTER_SCRIPT="curl --verbose -F json_file=@`pwd`/coveralls.json https://coveralls.io/api/v1/jobs";
+          fi;
+      elif [[  "$RUN_DOC_TEST" == "true" ]]; then
+          TEST_ARGS=RUN_DOC_TEST=true;
+      fi;
+
+    - echo Test arguments $TEST_ARGS $COVER_ARGS $OUTPUT_ARGS $RESULT_ARGS
+    - make test $TEST_ARGS $COVER_ARGS $OUTPUT_ARGS $RESULT_ARGS
+    - eval $AFTER_SCRIPT
+

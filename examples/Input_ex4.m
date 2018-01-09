@@ -27,7 +27,7 @@ udata.dx      = udata.len./udata.Nf;                      % cell length [m]
 
 %% SIMULATION PARAMETER FOR TRANSPORT --------------------------------------------------------------%
 udata.timeSim  = 86400;                         % total simulation time [s]
-udata.dt       = 600;                           % time step length [s]
+udata.dt       = 3600;                           % time step length [s]
 udata.tol    = 1.e-3;                       % saturation tolerance on pressure-concentration-heat loop [-]
 udata.maxit    = 100;                         % maximum number of pressure concentration-heat loops to converge
 
