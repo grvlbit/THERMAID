@@ -16,7 +16,6 @@ env:
  matrix:
     - WITH_COVERAGE=
     - WITH_COVERAGE=true
-    - RUN_DOC_TEST=true
 before_install:
     # Remember the directory where our repository to test is located
     - REPOPATH="$(pwd)" && pwd
@@ -38,10 +37,6 @@ before_install:
     - rm -rf MOcov
     - git clone https://github.com/MOcov/MOcov.git
     - make -C MOcov install
-    # retrieve MOdox
-    #- rm -rf MOdox
-    #- travis_retry git clone -v git://github.com/MOdox/MOdox.git
-    #- make -C MOdox install
     # Go back to the repository directory
     - cd ${REPOPATH}
 script:
@@ -53,8 +48,6 @@ script:
               OUTPUT_ARGS=COVER_JSON_FILE=`pwd`/coveralls.json;
               AFTER_SCRIPT="curl --verbose -F json_file=@`pwd`/coveralls.json https://coveralls.io/api/v1/jobs";
           fi;
-      elif [[  "$RUN_DOC_TEST" == "true" ]]; then
-          TEST_ARGS=RUN_DOC_TEST=true;
       fi;
 
     - echo Test arguments $TEST_ARGS $COVER_ARGS $OUTPUT_ARGS $RESULT_ARGS
