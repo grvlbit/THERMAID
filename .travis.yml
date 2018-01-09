@@ -47,7 +47,7 @@ before_install:
 before_script:
   - TEST_ARGS="'-recursive', '-verbose', '-junit_xml_file', 'testresults.xml'";
     if [ "$WITH_COVERAGE" = "true" ]; then
-        TEST_ARGS+=", '-with_coverage'";
+        TEST_ARGS+=", '-with_coverage', '-cover', '.'";
         TEST_ARGS+=", '-cover_exclude', 'tests'";
         TEST_ARGS+=", '-cover_xml_file', 'coverage.xml'";
         TEST_ARGS+=", '-cover_json_file', 'coveralls.json'";
