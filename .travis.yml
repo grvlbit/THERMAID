@@ -79,6 +79,6 @@ after_success:
   # We ignore coverage push failures because the servers are not 100%
   # reliable and we don't want the CI to report a failure just because the
   # coverage report wasn't published.
-  - if [ "$COVERAGE" = "true" ] && [ "$TRAVIS" = "true" ]; then
+  - if [ "$WITH_COVERAGE" = "true" ] && [ "$TRAVIS" = "true" ]; then
       curl --verbose -F json_file=@`pwd`/coveralls.json https://coveralls.io/api/v1/jobs  || echo "Coveralls push failed";
     fi;
