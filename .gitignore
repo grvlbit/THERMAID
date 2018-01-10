@@ -8,3 +8,7 @@ octave-workspace
 *.mov
 *.mp4
 *.avi
+
+# Exclude local coverage reports
+*.xml
+*.json

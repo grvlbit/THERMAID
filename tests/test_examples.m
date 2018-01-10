@@ -7,8 +7,8 @@ initTestSuite;
 end
 
 function test_ex1
-evalin('base','clear all');
-load comsol_bench_h.mat
+evalin('base','clear  calcVelocity initialize pressureSystem calc_interface_values_fracture');
+load  examples/comsol_bench_h.mat
 
 global k_ratio
 k_ratio = 1e3; % Run with Kf/Km = 1e3
@@ -39,8 +39,8 @@ assertEqual(round(RMSE_pm_1e3 *1e7)/1e7,0.0046731);
 end
 
 function test_ex2
-evalin('base','clear all');
-load comsol_bench_th2.mat
+evalin('base','clear  calcVelocity initialize pressureSystem calc_interface_values_fracture');
+load examples/comsol_bench_th2.mat
 
 global k_ratio
 
@@ -78,7 +78,7 @@ assertEqual(round(RMSE_T_horz *1e6)/1e6,0.011209);
 end
 
 % function test_ex3
-% evalin('base','clear all');
+% evalin('base','clear  calcVelocity initialize pressureSystem calc_interface_values_fracture');
 % 
 % global k_ratio
 % 
@@ -92,12 +92,12 @@ end
 % tNewf    = evalin('base','tNewf');
 % tNew    = evalin('base','tNew');
 % 
-% load reference_ex3.mat
+% load tests/reference_ex3.mat
 % 
-% % assertElementsAlmostEqual(p,p_ref)
-% % assertElementsAlmostEqual(pf,pf_ref)
-% % assertElementsAlmostEqual(tNew,T_ref)
-% % assertElementsAlmostEqual(tNewf,Tf_ref)
+% assertElementsAlmostEqual(p,p_ref)
+% assertElementsAlmostEqual(pf,pf_ref)
+% assertElementsAlmostEqual(tNew,T_ref)
+% assertElementsAlmostEqual(tNewf,Tf_ref)
 % end
 
 % function test_ex4
