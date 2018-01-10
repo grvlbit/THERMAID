@@ -42,7 +42,7 @@ before_install:
     - rm -rf MOcov
     - git clone https://github.com/MOcov/MOcov.git
     - make -C MOcov install
-    - sed -i '18i\    fns = fns(~cellfun('isempty',fns));' MOcov/@MOcovMFileCollection/prepare.m
+    - sed -i '18i\    fns = fns(~cellfun('isempty',fns));' MOcov/MOcov/@MOcovMFileCollection/prepare.m
     # Go back to the repository directory
     - cd ${REPOPATH}
     # Create copy of the repo for coverage
