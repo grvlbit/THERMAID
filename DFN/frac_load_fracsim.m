@@ -22,6 +22,23 @@
 
 filename = 'fracSimTest.csv';
 [x1,y1,x2,y2] = read_dfn_data_from_file(filename,'fracsim',2,3,4,5);
+
+xshift = min(min(x1),min(x2));
+yshift = min(min(y1),min(y2));
+
+x1 = x1 + abs(xshift);
+x2 = x2 + abs(xshift);
+y1 = y1 + abs(yshift);
+y2 = y2 + abs(yshift);
+
+maxx = max(max(x1),max(x2));
+maxy = max(max(y1),max(y2));
+
+udata.len     = [maxx maxy];                    % physical length of the domain in x and y direction [m]
+udata.Nf      = [151 151];  	                % number of cells in x and y direction
+udata.dx      = udata.len./udata.Nf;                      % cell length [m]
+
+
 dfn = [x1 y1 x2 y2];
 
 N_fractures = length(dfn);

@@ -77,58 +77,72 @@ assertEqual(round(RMSE_T_vert *1e6)/1e6,0.052653);
 assertEqual(round(RMSE_T_horz *1e6)/1e6,0.011209);
 end
 
-% function test_ex3
-% evalin('base','clear  calcVelocity initialize pressureSystem calc_interface_values_fracture');
-% 
-% global k_ratio
-% 
-% % Run with Kf/Km = 1e5
-% k_ratio = 1e5;
-% 
-% THERMAID('Input_ex3',0);
-% 
-% pf    = evalin('base','pf');
-% p    = evalin('base','p');
-% tNewf    = evalin('base','tNewf');
-% tNew    = evalin('base','tNew');
-% 
-% load tests/reference_ex3.mat
-% 
-% assertElementsAlmostEqual(p,p_ref)
-% assertElementsAlmostEqual(pf,pf_ref)
-% assertElementsAlmostEqual(tNew,T_ref)
-% assertElementsAlmostEqual(tNewf,Tf_ref)
-% end
+function test_ex3
+if moxunit_util_platform_is_octave()
+    moxunit_throw_test_skipped_exception('Skip test due to unresolved octave differences.');
+end
+evalin('base','clear  calcVelocity initialize pressureSystem calc_interface_values_fracture');
 
-% function test_ex4
-% clear all
-% 
-% THERMAID('Input_ex4',0);
-% 
-% pf    = evalin('base','pf');
-% p    = evalin('base','p');
-% 
-% load reference_ex4.mat
-% 
-% assertElementsAlmostEqual(p,p_ref)
-% assertElementsAlmostEqual(pf,pf_ref)
-% end
-% 
-% function test_ex5
-% clear all
-% 
-% THERMAID('Input_ex5',0);
-% 
-% pf    = evalin('base','pf');
-% p    = evalin('base','p');
-% tNewf    = evalin('base','tNewf');
-% tNew    = evalin('base','tNew');
-% 
-% load reference_ex5.mat
-% 
-% assertElementsAlmostEqual(p,p_ref)
-% assertElementsAlmostEqual(pf,pf_ref)
-% assertElementsAlmostEqual(tNew,T_ref)
-% assertElementsAlmostEqual(tNewf,Tf_ref)
-% 
-% end
+global k_ratio
+
+% Run with Kf/Km = 1e5
+k_ratio = 1e5;
+
+THERMAID('Input_ex3',0);
+
+pf    = evalin('base','pf');
+p    = evalin('base','p');
+tNewf    = evalin('base','tNewf');
+tNew    = evalin('base','tNew');
+
+load tests/reference_ex3.mat
+
+p = round(p *1e2)./1e2;
+p_ref = round(p_ref *1e2)./1e2;
+
+assertElementsAlmostEqual(p,p_ref)
+assertElementsAlmostEqual(pf,pf_ref)
+assertElementsAlmostEqual(tNew,T_ref)
+assertElementsAlmostEqual(tNewf,Tf_ref)
+end
+
+function test_ex4
+if moxunit_util_platform_is_octave()
+    moxunit_throw_test_skipped_exception('Skip test due to octave speed.');
+end
+evalin('base','clear  calcVelocity initialize pressureSystem calc_interface_values_fracture');
+
+THERMAID('Input_ex4',0);
+
+pf    = evalin('base','pf');
+p    = evalin('base','p');
+
+load reference_ex4.mat
+
+assertElementsAlmostEqual(p,p_ref)
+assertElementsAlmostEqual(pf,pf_ref)
+end
+
+function test_ex5
+if moxunit_util_platform_is_octave()
+    moxunit_throw_test_skipped_exception('Skip test due to octave speed.');
+end
+evalin('base','clear  calcVelocity initialize pressureSystem calc_interface_values_fracture');
+
+THERMAID('Input_ex5',0);
+
+pf    = evalin('base','pf');
+p    = evalin('base','p');
+tNewf    = evalin('base','tNewf');
+tNew    = evalin('base','tNew');
+
+load reference_ex5.mat
+
+assertElementsAlmostEqual(p,p_ref)
+assertElementsAlmostEqual(pf,pf_ref)
+assertElementsAlmostEqual(tNew,T_ref)
+assertElementsAlmostEqual(tNewf,Tf_ref)
+
+end
+
+

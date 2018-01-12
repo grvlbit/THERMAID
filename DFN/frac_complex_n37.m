@@ -20,7 +20,7 @@
 % 
 %  Authors: Gunnar Jansen, University of Neuchatel, 2016-2017
 
-N_fractures = 38;
+udata.N_fractures = 37;
 Nf_i = [];
 dxf = 1.1*sqrt(udata.dx(1)*udata.dx(1)+udata.dx(2)*udata.dx(2));
 
@@ -56,11 +56,12 @@ beta = atan2((yend-ystart),(xend-xstart))*180/pi;
 
 L = sqrt((yend/15-ystart/15).^2+(xend/15-xstart/15).^2);
 
-L = floor(L*150./dxf);
+% L = floor(L*150./dxf);
+L = floor(L*min(udata.len(1),udata.len(2))./dxf);
 
 xy = [xstart/15; ystart/10]';
 
-for i=1:N_fractures 
+for i=1:udata.N_fractures 
     pass = 0;
     while pass < 1
         

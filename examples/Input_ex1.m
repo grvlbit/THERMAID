@@ -34,7 +34,6 @@ udata.maxit    = 100;                         % maximum number of pressure conce
 %% FRACTURE NETWORK
 % Crossed fracture test case
 frac_cross
-% frac_single
 if (udata.dxf < min(udata.dx))
     error('dxf < dx')
 end

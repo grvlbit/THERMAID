@@ -20,8 +20,6 @@
 % 
 %  Authors: Gunnar Jansen, University of Neuchatel, 2016-2017
 
-% global dxf Nf_i frac_angle XY1
-
 udata.N_fractures = 2;
 
 dx_f = 1.1*min(udata.dx);
@@ -71,10 +69,10 @@ xe =[xe round(xei .* 1e4) ./ 1e4];
 yb =[yb round(yci .* 1e4) ./ 1e4];
 ye =[ye round(yci .* 1e4) ./ 1e4];
 
-ListOfVariables = who;
-for k = 1:length(ListOfVariables)
-   assignin('base',ListOfVariables{k},eval(ListOfVariables{k}))
-end 
+% ListOfVariables = who;
+% for k = 1:length(ListOfVariables)
+%    assignin('base',ListOfVariables{k},eval(ListOfVariables{k}))
+% end 
 
 XY1 = [xb' yb' xe' ye'];
 XY2(:,1,1) = xb';

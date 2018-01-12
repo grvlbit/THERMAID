@@ -1,23 +1,23 @@
 %  Generates a single fracture (either horizontal or vertical)
 %  ---------------------------------------------------------------------
 %  Copyright (C) 2016 by the Thermaid authors
-% 
+%
 %  This file is part of Thermaid.
-% 
+%
 %  Thermaid is free software: you can redistribute it and/or modify
 %  it under the terms of the GNU General Public License as published by
 %  the Free Software Foundation, either version 3 of the License, or
 %  (at your option) any later version.
-% 
+%
 %  Thermaid is distributed in the hope that it will be useful,
 %  but WITHOUT ANY WARRANTY; without even the implied warranty of
 %  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 %  GNU General Public License for more details.
-% 
+%
 %  You should have received a copy of the GNU General Public License
 %  along with Thermaid.  If not, see <http://www.gnu.org/licenses/>.
 %  ---------------------------------------------------------------------
-% 
+%
 %  Authors: Gunnar Jansen, University of Neuchatel, 2016-2017
 
 udata.N_fractures = 1;
@@ -35,43 +35,42 @@ ye = [];
 
 Nf_i = [];
 
+r = floor(5/9.*min(udata.len(1),udata.len(2))./dx_f);
 
 if(vertical)
-    dxl = 0;
-    dy = dx_f;
-
-    ybi = 2:dy:7-dy;
-    yei = 2+dy:dy:7;
-    yci = 2+dy/2:dy:7;
-    xci = 4.5*ones(size(yci));
-
-    xc =[xc round(xci .* 1e4) ./ 1e4];
-    yc =[yc round(yci .* 1e4) ./ 1e4];
+    dxi = 0;
+    dyi = dx_f;
+    
+    x = 0.5*udata.len(1); y=2/9*udata.len(2);
+    
+    ybi = y:dyi:y+r*dyi-dyi;
+    yei = y+dyi:dyi:y+r*dyi;
+    
+    xci = 0.5*udata.len(1)*ones(size(yei));
+    
+    
     xb =[xb round(xci .* 1e4) ./ 1e4];
     xe =[xe round(xci .* 1e4) ./ 1e4];
     yb =[yb round(ybi .* 1e4) ./ 1e4];
     ye =[ye round(yei .* 1e4) ./ 1e4];
     
     udata.Nf_i(1) = length(xci);
-    udata.frac_angle = [0 0];
 else
-    dxl = dx_f;
-    dy = 0;
-    xbi = 2:dxl:7-dxl; 
-    xei = 2+dxl:dxl:7;
-    xci = 2+dxl/2:dxl:7;
-    yci = 4.5*ones(size(xci));
-
+    dxi = dx_f;
+    dyi = 0;
+    
+    x = 2/9*udata.len(1); y=0.5*udata.len(2);
+    xbi = x:dxi:x+r*dxi-dxi;
+    xei = x+dxi:dxi:x+r*dxi;
+    
+    yci = 0.5*udata.len(2)*ones(size(xei));
+    
     udata.Nf_i(1) = length(xei);
-
-    xc =[xc round(xci .* 1e4) ./ 1e4];
-    yc =[yc round(yci .* 1e4) ./ 1e4];
+    
     xb =[xb round(xbi .* 1e4) ./ 1e4];
     xe =[xe round(xei .* 1e4) ./ 1e4];
     yb =[yb round(yci .* 1e4) ./ 1e4];
     ye =[ye round(yci .* 1e4) ./ 1e4];
-    
-    udata.frac_angle = [90 0];
 end
 
 XY1 = [xb' yb' xe' ye'];
