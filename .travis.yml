@@ -34,6 +34,8 @@ before_install:
     - rm -rf MOxUnit;
     - git clone https://github.com/MOxUnit/MOxUnit.git
     - make -C MOxUnit install
+    # Go back to the repository directory
+    - cd ${REPOPATH}
 before_script:
   - TEST_ARGS="'-recursive', '-verbose', '-junit_xml_file', 'testresults.xml'";
     TEST_COMMAND="exit(~moxunit_runtests('tests', $TEST_ARGS));";
