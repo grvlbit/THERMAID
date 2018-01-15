@@ -1,4 +1,4 @@
-function [x1,y1,x2,y2] = read_dfn_data_from_file(filename,format,c1,c2,c3,c4, startRow, endRow)
+function [x1,y1,x2,y2] = read_dfn_data_from_file(filename,format,c1,c2,c3,c4, startRow)
 %  Read DFN data from file. Currently FracMan and FracSim3D CSV files are
 %  supported. 
 %  ---------------------------------------------------------------------
@@ -36,7 +36,6 @@ function [x1,y1,x2,y2] = read_dfn_data_from_file(filename,format,c1,c2,c3,c4, st
 %                                      xEnd
 %                                      yEnd
 %        startRow          (optional) first row to be read from file
-%        endRow            (optional) last row to be read from file
 %
 %  Output:
 %        x1,y1,x2,y2       fracture position columns
@@ -50,7 +49,6 @@ function [x1,y1,x2,y2] = read_dfn_data_from_file(filename,format,c1,c2,c3,c4, st
 delimiter = ',';
 if nargin<=6
     startRow = 3;
-    endRow = inf;
 end
 
 %% Read columns of data as strings:
@@ -58,10 +56,12 @@ end
 if (strcmp(format,'fracman'))
     formatSpec = '%s%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%s';
 elseif (strcmp(format,'fracsim'))
-    formatSpec = '%f%f%f%f%f%f';
+    formatSpec = '%f%f%f%f%f';
 else
     error('Unknown input format')
 end
+
+
 
 %% Open the text file.
 fileID = fopen(filename,'r');
@@ -70,7 +70,6 @@ fileID = fopen(filename,'r');
 % This call is based on the structure of the file used to generate this
 % code. If an error occurs for a different file, try regenerating the code
 % from the Import Tool.
-% dataArray = textscan(fileID, formatSpec, endRow(1)-startRow(1)+1, 'Delimiter', delimiter, 'HeaderLines', startRow(1)-1);
 dataArray = textscan(fileID, formatSpec, 'Delimiter', delimiter, 'HeaderLines', startRow(1)-1);
 
 for block=2:length(startRow)
