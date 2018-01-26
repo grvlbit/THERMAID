@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/110665320.svg)](https://zenodo.org/badge/latestdoi/110665320)
+[![DOI](https://zenodo.org/badge/110665320.svg)](https://zenodo.org/badge/latestdoi/110665320) [![Build Status](https://travis-ci.org/gujans/THERMAID.svg?branch=master)](https://travis-ci.org/gujans/THERMAID)
 
 # THERMAID
 A numerical code to solve flow and heat transport in fractured porous media by the embedded discrete fracture method
