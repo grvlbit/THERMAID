@@ -64,7 +64,7 @@ T_interp_horz = interp1(x_ref_T_horz,T_ref_horz,x_interp);
 
 % Remove NaN from interpolation
 T_interp_horz(end) = T_interp_horz(end-2);
-T_interp_horz(end-1) = T_interp_horz(end-2); 
+T_interp_horz(end-1) = T_interp_horz(end-2);
 
 T_interp_vert = interp1(x_ref_T_vert,T_ref_vert,x_interp);
 T_interp_horz(end) = T_interp_horz(end-1);
@@ -142,6 +142,59 @@ assertElementsAlmostEqual(p,p_ref)
 assertElementsAlmostEqual(pf,pf_ref)
 assertElementsAlmostEqual(tNew,T_ref)
 assertElementsAlmostEqual(tNewf,Tf_ref)
+end
+
+function test_ex6
+
+evalin('base','clear  calcVelocity initialize pressureSystem calc_interface_values_fracture');
+
+THERMAID('Input_ex6',0);
+
+p    = evalin('base','p');
+
+pdiag = zeros(size(p,1),1);
+
+for i = 1:size(p,1)
+    pdiag(i) = p(i,i);
+end
+
+%% Analytical
+k_ratio = 1e2;
+a = 45*pi/180; % Fracture angle °
+b_max = 0.05;  % Maximum fracture aperture [m]
+L = 2; 
+K_m = 1e-12;
+K_f = K_m*k_ratio;
+mu = 1e-3;
+q0 = 1e-4;
+
+x = linspace(-5,5,301);
+y = linspace(-5,5,301);
+[X,Y] = meshgrid(x,y);
+z = X+1i*Y;
+z1 = (-1+0i)*exp(1i*a);
+z2 = (+1+0i)*exp(1i*a);
+
+Z = (z-0.5*(z1+z2))/(0.5*(z2-z1));
+A = 0.5*K_f*b_max/(K_m*L+K_f*b_max)*q0*L*cos(a);
+
+l = 1;
+o1 = -A.*sign(real(Z)).*sqrt((Z-l).*(Z+l));
+o2 = A.*Z;
+o3 = -0.5*q0*L.*exp(1i*a).*Z;
+
+omega = o1 + o2 + o3;
+phi = real(omega)*mu/K_m;
+
+phidiag = zeros(size(phi,1),1);
+
+for i = 1:size(phi,1)
+    phidiag(i) = phi(i,i);
+end
+
+
+perror = sqrt(mean((pdiag-phidiag).^2))/(max(phidiag)-min(phidiag));
+assertTrue(perror(1)<=0.0058);
 
 end
 

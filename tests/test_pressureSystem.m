@@ -142,11 +142,6 @@ for dt=0.02:0.02:0.1
 %     ylabel('Error [%]')
 end
 
-ListOfVariables = who;
-for k = 1:length(ListOfVariables)
-   assignin('base',ListOfVariables{k},eval(ListOfVariables{k}))
-end
-
 assertTrue(perror(1)<=0.0087);
 assertTrue(perror(2)<=0.0115);
 assertTrue(perror(3)<=0.0145);

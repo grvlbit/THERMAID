@@ -105,6 +105,21 @@ assertEqual(size(XY1,1),udata.Nf_f)
 assertEqual(size(udata.Nf_i,2),udata.N_fractures)
 end
 
+function test_frac_single_rot45
+udata.len     = [10 10];              % physical length of the domain in x and y direction [m]
+udata.Nf      = [100 100];  	      % number of cells in x and y direction
+udata.dx      = udata.len./udata.Nf;  % cell length [m]
+
+frac_single_rot45
+
+assertTrue(udata.dxf > min(udata.dx))
+assertEqual(udata.N_fractures,1)
+assertEqual(udata.Nf_f,11)
+assertEqual(length(udata.frac_angle),udata.Nf_f)
+assertEqual(size(XY1,1),udata.Nf_f)
+assertEqual(size(udata.Nf_i,2),udata.N_fractures)
+end
+
 function test_read_dfn_data_from_file
     assertExceptionThrown(@()read_dfn_data_from_file('foobar'),'*');
     assertExceptionThrown(@()read_dfn_data_from_file('foobar','fracMan',1,2,3,4),'*');
