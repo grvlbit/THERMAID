@@ -32,7 +32,7 @@ This will run first example of THERMAID. The other examples can be used similarl
     >> ex5
 
 If you recieve an error between running different examples or simulations complaining about **matrix dimensions that do not agree** 
-it is adviced to use 
+it is advised to use 
 
 ```
 close all; clear all;

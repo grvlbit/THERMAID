@@ -7,6 +7,7 @@ The following example cases are currenlty included in Thermaid
  - ex3 : Complex DFN with 13 fractures. Dynamic heat transport example.
  - ex4 : Loads a fracSim DFN (see also DFN/frac_load_fracsun.m for details) and runs transient fluid pressure diffusion.
  - ex5 : Loads a fracman DFN (see also DFN/frac_load_fracman.m for details) and runs transient fluid pressure diffusion.
+ - ex6 : Pressure field surrounding an inclined fracture. Steady-state pressure validation against analytical solution.
 
 If you recieve an error between running different examples or simulations complaining about **matrix dimensions that do not agree** 
 it is adviced to use 
