@@ -3,6 +3,8 @@
 # THERMAID
 A numerical code to solve flow and heat transport in fractured porous media by the embedded discrete fracture method
 
+THERMAID is a thermo-hydraulic code for fractured media that accounts for mechanical stability of the fractures, slip-induced transmissivity increase and thermally induced stresses.
+
 **Important note:** *Our documentation is currently under construction. Please don't hesistate to contact the author's directly should any questions arise.*
 
 What is Thermaid?

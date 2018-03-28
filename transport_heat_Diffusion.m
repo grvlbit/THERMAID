@@ -102,18 +102,18 @@ ri(ic4,1) = ri(ic4,1) + t4.*udata.FixT(i4,1);
 %------------------------%
 %  internal pressure BC  %
 %------------------------%
-if ~(isempty(udata.ibcp))
-    ind = sub2ind(Nf,udata.ibcp(:,1),udata.ibcp(:,2)); 
-
-    Di(ind) = Di(ind) + Dx(ind);
-    ri(ind) = ri(ind) + Dx(ind).*udata.ibcp(:,5);
-end
+% if ~(isempty(udata.ibcp))
+%     ind = sub2ind(Nf,udata.ibcp(:,1),udata.ibcp(:,2)); 
+% 
+%     Di(ind) = Di(ind) + Dx(ind);
+%     ri(ind) = ri(ind) + Dx(ind).*udata.ibcp(:,5);
+% end
 
 
 if ~(isempty(udata.ibcp))
     for i = 1:length(udata.ibcp(:,1))
         ind = udata.ibcp(i,3);
-        if (ind > 0)
+        if (ind > 0 && udata.ibcp(i,5) > 0)
             Di_f(ind,:) = 0;
             Di_f(ind,ind) = 1;
             rif(ind) = udata.ibcp(i,5);

@@ -21,6 +21,8 @@
 
 addpath ../
 
+close all; clear all;
+
 %% THERMAID
 
 global k_ratio

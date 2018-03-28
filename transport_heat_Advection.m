@@ -226,7 +226,7 @@ rhsf = sparse(zeros(nf,1));
 if ~(isempty(udata.ibcp))
     for i = 1:length(udata.ibcp(:,1))
         ind = udata.ibcp(i,3);
-        if (ind > 0)
+        if (ind > 0 && udata.ibcp(i,5) > 0)
             Upf(ind,:) = 0;
             Upf(ind,ind) = 1;
             rhsf(ind) = udata.ibcp(i,5);
