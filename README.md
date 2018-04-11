@@ -17,7 +17,7 @@ THERMAID is short for *Thermo-Hydraulic Energy Resource Modelling for Applicatio
 For the impatient:
 ------------------
 
-Download or clone the THERMAID repository. If you downloaded the repository as .zip or .tar.gz unpack it.
+Download or clone the THERMAID repository. If you downloaded the repository as .zip or .tar.gz unpack it. If you have downloaded the repository, please rename it to ```THERMAID```
 
 Let's say you've stored everything in a directory /path/to/THERMAID. 
 Then you can run and test the program by opening matlab and running:
