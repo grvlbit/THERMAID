@@ -57,10 +57,15 @@ function [stress_data,trig_tog,udata] = calc_frac_stability(udata,pf,trig_tog,tN
 %                             -> frac_az = 0
 %                             -> frac_dip = min(abs(udata.frac_angle),180-abs(udata.frac_angle))
 
-
-TR1 = udata.stress_trend(1);
-TR3 = udata.stress_trend(2);
-PL1 = udata.stress_plunge;
+if (size(udata.stress_trend,1) > 1)
+    TR1 = udata.stress_trend(:,1);
+    TR3 = udata.stress_trend(:,2);
+    PL1 = udata.stress_plunge;
+else
+    TR1 = udata.stress_trend(1)*ones(udata.Nf_f,1);
+    TR3 = udata.stress_trend(2)*ones(udata.Nf_f,1);
+    PL1 = udata.stress_plunge*ones(udata.Nf_f,1);
+end
 
 S1 = udata.sigma_1;
 S2 = udata.sigma_2;
@@ -87,9 +92,9 @@ data = zeros(udata.Nf_f,2);
 for i=1:length(Xg(:,1))
     
     if (udata.use_thermal_stress)
-        [sigma_n, tau]=shearstress_on_fracture([S1(i)-pf(i)+St(i) 0 0; 0 S2(i)-pf(i)+St(i) 0; 0 0 S3(i)-pf(i)+St(i)],TR1,PL1,TR3,Xg(i,1),Xg(i,2));
+        [sigma_n, tau]=shearstress_on_fracture([S1(i)-pf(i)+St(i) 0 0; 0 S2(i)-pf(i)+St(i) 0; 0 0 S3(i)-pf(i)+St(i)],TR1(i),PL1(i),TR3(i),Xg(i,1),Xg(i,2));
     else
-        [sigma_n, tau]=shearstress_on_fracture([S1(i)-pf(i) 0 0; 0 S2(i)-pf(i) 0; 0 0 S3(i)-pf(i)],TR1,PL1,TR3,Xg(i,1),Xg(i,2));
+        [sigma_n, tau]=shearstress_on_fracture([S1(i)-pf(i) 0 0; 0 S2(i)-pf(i) 0; 0 0 S3(i)-pf(i)],TR1(i),PL1(i),TR3(i),Xg(i,1),Xg(i,2));
     end
     
     shear_tendency(i)=tau/sigma_n;
